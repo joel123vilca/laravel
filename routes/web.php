@@ -21,5 +21,6 @@ Route::post('/messages/create', 'MessagesController@create')
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
-
+Route::get('/{username}/follows','UserController@follows');
+Route::post('/{username}/follow','UserController@follow');
 Route::get('/{username}', 'UserController@show');
