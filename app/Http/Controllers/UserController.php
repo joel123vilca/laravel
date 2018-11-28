@@ -18,9 +18,19 @@ class UserController extends Controller
     {
         $user = $this->findByUsername($username);
         return view('users.follows',[
-            'user' => $user
+            'user' => $user,
+            'follows'=>$user->follows,
         ]);
     }
+    public function followers($username)
+    {
+        $user = $this->findByUsername($username);
+        return view('users.follows',[
+            'user' => $user,
+            'follows'=>$user->followers,
+        ]);
+    }
+
 
     public function follow($username , Request $request)
     {
@@ -28,6 +38,14 @@ class UserController extends Controller
         $me = $request->user();
         $me->follows()->attach($user);
         return redirect("/$username")->withSuccess('usuario seguido !');
+    }
+
+    public function unfollow($username , Request $request)
+    {
+        $user = $this->findByUsername($username);
+        $me = $request->user();
+        $me->follows()->detach($user);
+        return redirect("/$username")->withSuccess('usuario no seguido !');
     }
 
     private function findByUsername($username)
