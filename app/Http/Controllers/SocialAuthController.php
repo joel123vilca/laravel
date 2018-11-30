@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\User;
+use App\SocialProfile;
 use Illuminate\Http\Request;
 use Socialite;
 
@@ -20,5 +21,24 @@ class SocialAuthController extends Controller
         return view('users.facebook',[
             'user'=> $user,
         ]);
+    }
+    public function register(Request $request)
+    {
+        $data = session('facebookUser');
+        $username=$request->input('username');
+    
+        $user = User::create([
+            'name'=>$data->name,
+            'email'=>$data->email,
+            'avatar'=>$data->avatar,
+            'username'=>$data->username,
+            'password'=>str_random(16),
+        ]);
+        $profile = SocialProfile::create([
+            'social_id'=>$data->id,
+            'user_id'=>$data->id,
+        ]);
+        auth()->login($user);
+        return redirect('/');
     }
 }

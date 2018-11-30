@@ -53,4 +53,8 @@ class UserController extends Controller
         return User::where('username', $username)->first();
     }
 
+    public function socialProfiles()
+    {
+        return $this->hasMany(SocialProfile::class);
+    }
 }
